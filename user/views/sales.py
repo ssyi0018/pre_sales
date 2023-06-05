@@ -44,7 +44,7 @@ def sales_add(request):
     #     return render(request, 'sales_add.html', {'form': form, 'title': title})
     form = SalesModelForm(data=request.POST, files=request.FILES)
     if form.is_valid():
-        file_name = request.FILES['filepath'].name.split('.')[0]
+        # file_name = request.FILES['filepath'].name.split('.')[0]
         file_ext = request.FILES['filepath'].name.split('.')[-1]
         if file_ext == 'pptx' or file_ext == 'ppt':
             form.instance.filepath.name = request.FILES['filepath'].name
@@ -52,7 +52,7 @@ def sales_add(request):
         form.instance.update_time = timezone.now().strftime('%Y-%m-%d-%H:%M:%S')
         # 获取account里登陆的session中id
         form.instance.user_id = request.session['info']['id']
-        form.instance.filename = file_name
+        form.instance.filename = request.FILES['filepath'].name
         form.save()
         # 返回到Ajax里res
         # 下面两句意思相等
