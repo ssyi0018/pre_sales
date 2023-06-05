@@ -46,7 +46,10 @@ def login(request):
                 form.add_error('password', '用户名或密码错误')
                 return render(request, 'login.html', {'form': form})
             # 登录成功，cookie和session处理
-            request.session['info'] = {'id': admin_object.id, 'name': admin_object.username}
+            request.session['info'] = {
+                'id': admin_object.id,
+                'name': admin_object.username,
+            }
             # 1天免登陆，session保存1天
             request.session.set_expiry(60 * 60 * 60)
             return redirect('/user/list')

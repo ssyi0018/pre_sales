@@ -16,13 +16,18 @@ class UserForm(BootStrapModelForm):
 
     class Meta:
         model = models.UserInfo
-        fields = ['username', 'password', 'confirm_password', 'email', 'create_time', 'gender', 'depart', 'role', ]
+        fields = ['username', 'fullname', 'password', 'confirm_password', 'email', 'create_time', 'gender', 'depart',
+                  'role', ]
+        # fields = list(models.UserInfo._meta.get_fields()) + ['confirm_password']
         widgets = {
             'password': forms.PasswordInput(render_value=True),
         }
 
     def clean_password(self):
+        MIN_PASSWORD_LENGTH = 6
         pwd = self.cleaned_data.get('password')
+        if len(pwd) < MIN_PASSWORD_LENGTH:
+            raise forms.ValidationError("密码长度至少为 %d 位" % MIN_PASSWORD_LENGTH)
         return md5(pwd)
 
     # 钩子函数,针对fields里字段
@@ -38,7 +43,7 @@ class UserForm(BootStrapModelForm):
 class UserInfoEditForm(BootStrapModelForm):
     class Meta:
         model = models.UserInfo
-        fields = ['username', 'email', 'depart']
+        fields = ['username', 'fullname', 'email', 'depart']
 
 
 class UserInfoResetForm(BootStrapModelForm):
@@ -55,12 +60,15 @@ class UserInfoResetForm(BootStrapModelForm):
         }
 
     def clean_password(self):
+        MIN_PASSWORD_LENGTH = 6
         pwd = self.cleaned_data.get('password')
         md5_pwd = md5(pwd)
         # 数据库校验密码是否一致
         exists = models.UserInfo.objects.filter(id=self.instance.pk, password=md5_pwd).exists()
         if exists:
             raise ValidationError('密码不能与之前一样！')
+        elif len(pwd) < MIN_PASSWORD_LENGTH:
+            raise forms.ValidationError("密码长度至少为 %d 位" % MIN_PASSWORD_LENGTH)
         return md5_pwd
 
     # 钩子函数,针对fields里字段

@@ -5,6 +5,7 @@ from django.db import models
 class UserInfo(models.Model):
     """用户表"""
     username = models.CharField(verbose_name='用户名', max_length=255)
+    fullname = models.CharField(verbose_name='姓名', max_length=255)
     password = models.CharField(verbose_name='密码', max_length=150)
     email = models.CharField(verbose_name='邮箱', max_length=255)
     create_time = models.DateField(verbose_name='注册时间')
@@ -33,3 +34,14 @@ class Role(models.Model):
 
     def __str__(self):
         return self.caption
+
+
+class SalesInfo(models.Model):
+    filename = models.CharField(verbose_name='文件名', max_length=255)
+    create_time = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
+    sort = models.CharField(verbose_name='所属分类', max_length=255)
+    filepath = models.FileField(verbose_name='文件路径', max_length=128, upload_to='sales/%Y-%m-%d')
+    user = models.ForeignKey(verbose_name='负责人', to='UserInfo', to_field='id', null=True, blank=True,
+                             on_delete=models.SET_NULL)
+    update_time = models.DateTimeField(verbose_name='更新时间')
+    renew = models.CharField(verbose_name='更新说明', max_length=255)
