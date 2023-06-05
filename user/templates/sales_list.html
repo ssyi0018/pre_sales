@@ -241,10 +241,12 @@
         }
 
         function doAdd() {
+            {#var form_data = new FormData($('#formAdd')[0]);#}
             $.ajax({
                 url: '/sales/add/',
                 type: 'post',
                 data: $('#formAdd').serialize(),
+                {#data: form_data,#}
                 dataType: 'JSON',
                 success: function (res) {
                     if (res.status) {
