@@ -1,6 +1,6 @@
 import json
 from user import models
-from datetime import datetime
+from django.utils import timezone
 from django.http import JsonResponse
 from django.shortcuts import render, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -15,7 +15,7 @@ class SalesModelForm(BootStrapModelForm):
         model = models.SalesInfo
         # fields = '__all__'
         # 排除某个字段
-        exclude = ['filename', 'create_time', 'user']
+        exclude = ['filename', 'create_time', 'user', ]
 
 
 def sales_list(request):
@@ -38,6 +38,10 @@ def sales_list(request):
 
 @csrf_exempt
 def sales_add(request):
+    # title = 'ModelForm上传'
+    # if request.method == 'GET':
+    #     form = SalesModelForm()
+    #     return render(request, 'sales_add.html', {'form': form, 'title': title})
     form = SalesModelForm(data=request.POST, files=request.FILES)
     if form.is_valid():
         file_name = request.FILES['filepath'].name.split('.')[0]
@@ -45,7 +49,7 @@ def sales_add(request):
         if file_ext == 'pptx' or file_ext == 'ppt':
             form.instance.filepath.name = request.FILES['filepath'].name
         # 非页面上提交的字段
-        form.instance.update_time = datetime.now().strftime('%Y%m%d%H%M%S')
+        form.instance.update_time = timezone.now().strftime('%Y-%m-%d-%H:%M:%S')
         # 获取account里登陆的session中id
         form.instance.user_id = request.session['info']['id']
         form.instance.filename = file_name
@@ -53,6 +57,5 @@ def sales_add(request):
         # 返回到Ajax里res
         # 下面两句意思相等
         return JsonResponse({'status': True})
-        # return HttpResponse(json.dumps({'status': True}))
     data_dict = {'status': False, 'error': form.errors}
     return HttpResponse(json.dumps(data_dict, ensure_ascii=False))

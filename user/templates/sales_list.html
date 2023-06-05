@@ -93,7 +93,6 @@
                         <th>文件名</th>
                         <th>创建时间</th>
                         <th>所属分类</th>
-                        <th>文件路径</th>
                         <th>负责人</th>
                         <th>更新时间</th>
                         <th>更新说明</th>
@@ -105,11 +104,10 @@
                         <tr uid="{{ foo.id }}">
                             <th>{{ foo.id }}</th>
                             <td>{{ foo.filename }}</td>
-                            <td>{{ foo.create_time }}</td>
+                            <td>{{ foo.create_time|date:'Y-m-d' }}</td>
                             <td>{{ foo.sort }}</td>
-                            <td>{{ foo.filepath }}</td>
                             <td>{{ foo.userinfo.username }}</td>
-                            <td>{{ foo.update_time }}</td>
+                            <td>{{ foo.update_time|date:'Y-m-d' }}</td>
                             <td>{{ foo.renew }}</td>
                             <td>
                                 <input uid="{{ foo.id }}" type="button" class="btn btn-primary btn-xs btn-edit"
@@ -222,7 +220,6 @@
             })
         }
 
-
         function bindBtnSaveEvent() {
             $('#btnSave').click(function () {
                 // 清除错误信息
@@ -241,29 +238,27 @@
         }
 
         function doAdd() {
-            {#var form_data = new FormData($('#formAdd')[0]);#}
+            var form_data = new FormData($('#formAdd')[0]);
             $.ajax({
                 url: '/sales/add/',
                 type: 'post',
-                data: $('#formAdd').serialize(),
-                {#data: form_data,#}
-                dataType: 'JSON',
+                data: form_data,
+                processData: false,
+                contentType: false,
+                dataType: 'json',
                 success: function (res) {
                     if (res.status) {
                         alert('添加成功');
-                        // 清空表单
                         $('#formAdd')[0].reset();
-                        // 关闭对话框
                         $('#myModal').modal('hide');
-                        //页面刷新
                         location.reload();
                     } else {
                         $.each(res.error, function (name, errorList) {
                             $('#id_' + name).next().text(errorList[0]);
-                        })
+                        });
                     }
                 }
-            })
+            });
         }
 
         function doEdit() {
