@@ -59,3 +59,45 @@ def sales_add(request):
         return JsonResponse({'status': True})
     data_dict = {'status': False, 'error': form.errors}
     return HttpResponse(json.dumps(data_dict, ensure_ascii=False))
+
+
+@csrf_exempt
+def sales_edit(request):
+    uid = request.GET.get('uid')
+    row_object = models.SalesInfo.objects.filter(id=uid).first()
+    if not row_object:
+        return JsonResponse({'status': False, 'tips': '数据不存在，请刷新重试！'})
+
+    form = SalesModelForm(data=request.POST, instance=row_object, files=request.FILES)
+    if form.is_valid():
+        row = form.save(commit=False)
+        row.filename = request.FILES['filepath'].name
+        row.save()
+        return JsonResponse({'status': True})
+    return JsonResponse({'status': False, 'tips': '数据修改失败，请检查输入字段！'})
+
+
+def sales_detail(request):
+    # 方式一
+    uid = request.GET.get('uid')
+    # 方式一
+    # row_object = models.Order.objects.filter(id=uid).first()
+    # 方式二，数据库获得字典
+    row_dict = models.SalesInfo.objects.filter(id=uid).values('filename', 'sort', 'renew').first()
+    if not dict:
+        return JsonResponse({'status': False, 'error': '数据不存在！'})
+    result = {
+        'status': True,
+        'data': row_dict,
+    }
+    # 给前端res数据
+    return JsonResponse(result)
+
+
+def sales_delete(request):
+    uid = request.GET.get('uid')
+    exists = models.SalesInfo.objects.filter(id=uid).exists()
+    if not exists:
+        return JsonResponse({'status': False, 'error': '删除失败，数据不存在！'})
+    models.SalesInfo.objects.filter(id=uid).delete()
+    return JsonResponse({'status': True})

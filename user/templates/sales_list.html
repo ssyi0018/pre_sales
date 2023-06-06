@@ -248,7 +248,7 @@
                 dataType: 'json',
                 success: function (res) {
                     if (res.status) {
-                        alert('添加成功');
+                        alert('提交成功');
                         $('#formAdd')[0].reset();
                         $('#myModal').modal('hide');
                         location.reload();
@@ -262,14 +262,17 @@
         }
 
         function doEdit() {
+            var form_data = new FormData($('#formAdd')[0]);
             $.ajax({
-                url: '/order/edit/' + '?uid=' + edit_id,
+                url: '/sales/edit/' + '?uid=' + edit_id,
                 type: 'post',
-                data: $('#formAdd').serialize(),
+                data: form_data,
+                processData: false,
+                contentType: false,
                 dataType: 'JSON',
                 success: function (res) {
                     if (res.status) {
-                        alert('修改成功');
+                        alert('更新成功');
                         // 清空表单
                         $('#formAdd')[0].reset();
                         // 关闭对话框
@@ -307,7 +310,7 @@
                 // 确认删除，把全局变量中的id发送到后台
                 $.ajax({
                     {#url: '/order/' + delete_id + 'delete/',#}
-                    url: '/order/delete/',
+                    url: '/sales/delete/',
                     type: 'GET',
                     data: {
                         uid: delete_id
@@ -341,7 +344,7 @@
                 edit_id = currentId;
                 //发送ajax去后台发送当前行数据
                 $.ajax({
-                    url: '/order/detail/',
+                    url: '/sales/detail/',
                     type: 'GET',
                     data: {
                         uid: currentId
@@ -354,14 +357,14 @@
                                 $('#id_' + name).val(value);
                             })
                             // 修改对话框标题
-                            $('#myModalLabel').text('更新订单');
+                            $('#myModalLabel').text('更新文件');
                             $('#myModal').modal('show');
                         } else {
                             alert(res.error);
                         }
                     }
                 })
-
+                initUpdateTime();
                 //对话框中默认展现
             })
         }

@@ -38,5 +38,8 @@ urlpatterns = [
     # 售前文档管理
     path('sales/list/', sales.sales_list),
     path('sales/add/', sales.sales_add),
+    path('sales/delete/', sales.sales_delete),
+    path('sales/edit/', sales.sales_edit),
+    path('sales/detail/', sales.sales_detail),
 
 ]
