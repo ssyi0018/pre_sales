@@ -37,10 +37,35 @@ class Role(models.Model):
 
 
 class SalesInfo(models.Model):
+    # 文件分类数据
+    sort_choices = (
+        (1, '公司白皮书'),
+        (2, '公司销售白皮书'),
+        (3, 'O32系统'),
+        (4, 'TA系统'),
+        (5, '东方证券'),
+        (6, '光大证券'),
+        (7, '国金证券'),
+        (8, '国元证券'),
+        (9, '海通证券'),
+        (10, '券商周末测试'),
+        (11, '自动化平台'),
+        (12, '测试管理平台'),
+        (13, '环境配置管理'),
+        (14, '客户行为回放'),
+        (15, '手机自动化平台'),
+        (16, '数据构造平台'),
+        (17, '统一模拟'),
+        (18, '小工具介绍'),
+        (19, 'MicroFocus(OpenText)'),
+        (20, '社保'),
+        (21, '长鑫存储'),
+    )
+
     filename = models.CharField(verbose_name='文件名', max_length=255)
     create_time = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
-    sort = models.CharField(verbose_name='所属分类', max_length=255)
-    sort_id = models.IntegerField(verbose_name='分类id')
+    sort = models.IntegerField(verbose_name='所属分类', choices=sort_choices)
+    # sort_id = models.IntegerField(verbose_name='分类id')
     filepath = models.FileField(verbose_name='文件路径', max_length=128, upload_to='sales/%Y-%m-%d')
     user = models.ForeignKey(verbose_name='负责人', to='UserInfo', to_field='id', null=True, blank=True,
                              on_delete=models.SET_NULL)

@@ -31,9 +31,7 @@
                             <div class="header" onclick="clickMe(this)">公司售前资料</div>
                             <div class="content">
                                 <a>公司白皮书</a>
-                                <a>公司其它项目介绍</a>
-                                <a>公司券商项目介绍</a>
-                                <a>公司自研产品介绍</a>
+                                <a>公司销售白皮书</a>
                             </div>
                         </div>
 
@@ -105,7 +103,7 @@
                             <th>{{ foo.id }}</th>
                             <td><a href="{{ foo.filepath.url }}">{{ foo.filename }}</a></td>
                             <td>{{ foo.create_time|date:'Y-m-d' }}</td>
-                            <td>{{ foo.sort }}</td>
+                            <td>{{ foo.get_sort_display }}</td>
                             <td>{{ foo.user.fullname }}</td>
                             <td>{{ foo.update_time|date:'Y-m-d' }}</td>
                             <td>{{ foo.renew }}</td>
@@ -182,15 +180,4 @@
     <script src="{% static 'plugins/bootstrap-datepicker/js/bootstrap-datepicker.js' %}"></script>
     <script src="{% static 'plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js' %}"></script>
     <script src="{% static 'js/annex.js' %}"></script>
-    <script>
-        $(function () {
-            $('.content-link').on('click', function (event) {
-                event.preventDefault(); // 阻止链接默认跳转行为
-                var href = $(this).attr('href'); // 获取链接地址
-                $.get(href, function (data) { // 发送 GET 请求，获取服务器返回的数据
-                    $('tbody').html(data); // 将服务器返回的数据重新渲染页面中的tbody标签
-                });
-            });
-        });
-    </script>
 {% endblock %}

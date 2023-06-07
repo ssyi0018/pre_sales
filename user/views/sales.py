@@ -19,20 +19,8 @@ class SalesModelForm(BootStrapModelForm):
         model = models.SalesInfo
         # fields = '__all__'
         # 排除某个字段
-        exclude = ['filename', 'create_time', 'user', ]
+        exclude = ['filename', 'create_time', 'user', 'sort_id', ]
 
-
-class AjaxMiddleware:
-    def __init__(self, get_response):
-        self.get_response = get_response
-
-    def __call__(self, request):
-        def is_ajax(self):
-            return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
-
-        request.is_ajax = is_ajax.__get__(request)
-        response = self.get_response(request)
-        return response
 
 def sales_list(request):
     # 查询
@@ -41,12 +29,11 @@ def sales_list(request):
         queryset = models.SalesInfo.objects.filter(filename__contains=search_data).order_by('-id')
     else:
         queryset = models.SalesInfo.objects.all().order_by('-id')
-
+    # 左边菜单查询
     sort = request.GET.get('sort', '')
     if sort:
-        queryset = queryset.filter(sort_id=sort)
+        queryset = queryset.filter(sort=sort)
         return render(request, 'sales_list_table.html', {'queryset': queryset})
-
     page_object = Pagination(request, queryset, page_size=5)
     form = SalesModelForm()
     context = {'form': form,
@@ -57,29 +44,48 @@ def sales_list(request):
     return render(request, 'sales_list.html', context)
 
 
+# @csrf_exempt
+# def sales_add(request):
+#     form = SalesModelForm(data=request.POST, files=request.FILES)
+#     if form.is_valid():
+#         # file_name = request.FILES['filepath'].name.split('.')[0]
+#         # file_ext = request.FILES['filepath'].name.split('.')[-1]
+#         # if file_ext == 'pptx' or file_ext == 'ppt':
+#         #     form.instance.filepath.name = request.FILES['filepath'].name
+#         # 非页面上提交的字段
+#         form.instance.update_time = timezone.now()
+#         # 获取account里登陆的session中id
+#         form.instance.user_id = request.session['info']['id']
+#         # 文件名重复判断
+#         filename = request.FILES['filepath'].name
+#         if models.SalesInfo.objects.filter(filename=filename).exists():
+#             return JsonResponse({'status': False, 'filename_exists': True})
+#         form.instance.filename = filename
+#         form.save()
+#         # 返回到Ajax里res
+#         # 下面两句意思相等
+#         return JsonResponse({'status': True})
+#     data_dict = {'status': False, 'error': form.errors}
+#     return HttpResponse(json.dumps(data_dict, ensure_ascii=False))
+
 @csrf_exempt
 def sales_add(request):
     form = SalesModelForm(data=request.POST, files=request.FILES)
     if form.is_valid():
-        # file_name = request.FILES['filepath'].name.split('.')[0]
-        # file_ext = request.FILES['filepath'].name.split('.')[-1]
-        # if file_ext == 'pptx' or file_ext == 'ppt':
-        #     form.instance.filepath.name = request.FILES['filepath'].name
-        # 非页面上提交的字段
         form.instance.update_time = timezone.now()
-        # 获取account里登陆的session中id
         form.instance.user_id = request.session['info']['id']
-        # 文件名重复判断
         filename = request.FILES['filepath'].name
         if models.SalesInfo.objects.filter(filename=filename).exists():
+            # 文件名已存在
             return JsonResponse({'status': False, 'filename_exists': True})
         form.instance.filename = filename
         form.save()
-        # 返回到Ajax里res
-        # 下面两句意思相等
+        # 保存成功
         return JsonResponse({'status': True})
-    data_dict = {'status': False, 'error': form.errors}
-    return HttpResponse(json.dumps(data_dict, ensure_ascii=False))
+    else:
+        # 表单验证失败
+        errors_dict = form.errors.as_json()
+        return JsonResponse({'status': False, 'errors': errors_dict}, status=400)
 
 
 @csrf_exempt
@@ -123,5 +129,3 @@ def sales_delete(request):
         return JsonResponse({'status': False, 'error': '删除失败，数据不存在！'})
     models.SalesInfo.objects.filter(id=uid).delete()
     return JsonResponse({'status': True})
-
-

@@ -196,3 +196,15 @@ function clickMe(self) {
     }
     $(self).parent().siblings().find('.content').addClass('hide');
 }
+
+// 点击左边右边页面刷新
+$(function () {
+    $('.content-link').on('click', function (event) {
+        event.preventDefault(); // 阻止链接默认跳转行为
+        var href = $(this).attr('href'); // 获取链接地址
+        $.get(href, function (data) { // 发送 GET 请求，获取服务器返回的数据
+            $('table').html(data); // 将服务器返回的数据重新渲染页面中的table标签
+            bindBtnEditEvent();
+        });
+    });
+});
