@@ -1,5 +1,7 @@
 var delete_id;
 var edit_id;
+var requesting = false;  // 添加全局变量，用于判断当前是否正在进行 AJAX 请求
+
 $(function () {
     bindBtnAddEvent();
     bindBtnSaveEvent();
@@ -51,6 +53,10 @@ function bindBtnSaveEvent() {
 }
 
 function doAdd() {
+    if (requesting) {  // 如果当前正在进行 AJAX 请求，则直接返回，不发起新的请求
+        return;
+    }
+    requesting = true;  // 标记当前正在进行 AJAX 请求
     var form_data = new FormData($('#formAdd')[0]);
     $.ajax({
         url: '/sales/add/',
@@ -60,6 +66,7 @@ function doAdd() {
         contentType: false,
         dataType: 'json',
         success: function (res) {
+            requesting = false;  // AJAX 请求完成后将标记置回
             if (res.status) {
                 alert('提交成功');
                 $('#formAdd')[0].reset();
@@ -80,6 +87,10 @@ function doAdd() {
 }
 
 function doEdit() {
+    if (requesting) {  // 如果当前正在进行 AJAX 请求，则直接返回，不发起新的请求
+        return;
+    }
+    requesting = true;  // 标记当前正在进行 AJAX 请求
     var form_data = new FormData($('#formAdd')[0]);
     $.ajax({
         url: '/sales/edit/' + '?uid=' + edit_id,
@@ -89,6 +100,7 @@ function doEdit() {
         contentType: false,
         dataType: 'JSON',
         success: function (res) {
+            requesting = false;  // AJAX 请求完成后将标记置回
             if (res.status) {
                 alert('更新成功');
                 // 清空表单
@@ -199,7 +211,7 @@ function clickMe(self) {
 }
 
 // 点击左边右边页面刷新
-function listTable () {
+function listTable() {
     $('.content-link').on('click', function (event) {
         event.preventDefault(); // 阻止链接默认跳转行为
         var href = $(this).attr('href'); // 获取链接地址
