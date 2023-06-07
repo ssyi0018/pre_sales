@@ -6,6 +6,7 @@ $(function () {
     bindBtnDeleteEvent();
     bindBtnConfirmDeleteEvent();
     bindBtnEditEvent();
+    listTable();
 })
 
 function bindBtnAddEvent() {
@@ -198,7 +199,7 @@ function clickMe(self) {
 }
 
 // 点击左边右边页面刷新
-$(function () {
+function listTable () {
     $('.content-link').on('click', function (event) {
         event.preventDefault(); // 阻止链接默认跳转行为
         var href = $(this).attr('href'); // 获取链接地址
@@ -207,4 +208,4 @@ $(function () {
             bindBtnEditEvent();
         });
     });
-});
+};

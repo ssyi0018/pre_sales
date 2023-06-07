@@ -44,48 +44,29 @@ def sales_list(request):
     return render(request, 'sales_list.html', context)
 
 
-# @csrf_exempt
-# def sales_add(request):
-#     form = SalesModelForm(data=request.POST, files=request.FILES)
-#     if form.is_valid():
-#         # file_name = request.FILES['filepath'].name.split('.')[0]
-#         # file_ext = request.FILES['filepath'].name.split('.')[-1]
-#         # if file_ext == 'pptx' or file_ext == 'ppt':
-#         #     form.instance.filepath.name = request.FILES['filepath'].name
-#         # 非页面上提交的字段
-#         form.instance.update_time = timezone.now()
-#         # 获取account里登陆的session中id
-#         form.instance.user_id = request.session['info']['id']
-#         # 文件名重复判断
-#         filename = request.FILES['filepath'].name
-#         if models.SalesInfo.objects.filter(filename=filename).exists():
-#             return JsonResponse({'status': False, 'filename_exists': True})
-#         form.instance.filename = filename
-#         form.save()
-#         # 返回到Ajax里res
-#         # 下面两句意思相等
-#         return JsonResponse({'status': True})
-#     data_dict = {'status': False, 'error': form.errors}
-#     return HttpResponse(json.dumps(data_dict, ensure_ascii=False))
-
 @csrf_exempt
 def sales_add(request):
     form = SalesModelForm(data=request.POST, files=request.FILES)
     if form.is_valid():
+        # file_name = request.FILES['filepath'].name.split('.')[0]
+        # file_ext = request.FILES['filepath'].name.split('.')[-1]
+        # if file_ext == 'pptx' or file_ext == 'ppt':
+        #     form.instance.filepath.name = request.FILES['filepath'].name
+        # 非页面上提交的字段
         form.instance.update_time = timezone.now()
+        # 获取account里登陆的session中id
         form.instance.user_id = request.session['info']['id']
+        # 文件名重复判断
         filename = request.FILES['filepath'].name
         if models.SalesInfo.objects.filter(filename=filename).exists():
-            # 文件名已存在
             return JsonResponse({'status': False, 'filename_exists': True})
         form.instance.filename = filename
         form.save()
-        # 保存成功
+        # 返回到Ajax里res
+        # 下面两句意思相等
         return JsonResponse({'status': True})
-    else:
-        # 表单验证失败
-        errors_dict = form.errors.as_json()
-        return JsonResponse({'status': False, 'errors': errors_dict}, status=400)
+    data_dict = {'status': False, 'error': form.errors}
+    return HttpResponse(json.dumps(data_dict, ensure_ascii=False))
 
 
 @csrf_exempt
