@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<div class="container">
+    <!-- 右边列表 -->
+    <div class="col-sm-9">
+        <div class="panel panel-default">
+            <!-- Table -->
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>文件名</th>
+                    <th>创建时间</th>
+                    <th>所属分类</th>
+                    <th>负责人</th>
+                    <th>更新时间</th>
+                    <th>更新说明</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for foo in  queryset %}
+                    <tr uid="{{ foo.id }}">
+                        <th>{{ foo.id }}</th>
+                        <td><a href="{{ foo.filepath.url }}">{{ foo.filename }}</a></td>
+                        <td>{{ foo.create_time|date:'Y-m-d' }}</td>
+                        <td>{{ foo.sort }}</td>
+                        <td>{{ foo.user.fullname }}</td>
+                        <td>{{ foo.update_time|date:'Y-m-d' }}</td>
+                        <td>{{ foo.renew }}</td>
+                        <td>
+                            <input uid="{{ foo.id }}" type="button" class="btn btn-primary btn-xs btn-edit"
+                                   value="更新">
+                            <!--
+                                <input uid="{{ foo.id }}" class="btn btn-danger btn-xs btn-delete" type="button"
+                                       value="删除">
+                                 -->
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <ul class="pagination" style="margin-left: 15px;">
+        {{ page_string }}
+    </ul>
+</div>
+<!-- 新建/编辑订单 -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">上传文件</h4>
+            </div>
+            <div class="modal-body">
+                <form id="formAdd">
+                    <div class="clearfix">
+                        {% for field in form %}
+                            <div class="col-xs-6">
+                                <div class="form-group" style="position: relative; margin-bottom: 20px">
+                                    <label>{{ field.label }}</label>
+                                    {{ field }}
+                                    <span class="error-msg" style="color: red;position: absolute;"></span>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button id='btnSave' type="button" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/jquery-3.6.4.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-3.4.1/js/bootstrap.js' %}"></script>
+<script src="{% static 'js/annex.js' %}"></script>

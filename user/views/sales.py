@@ -1,5 +1,9 @@
 import json
+import os
 from user import models
+from urllib.parse import unquote
+from django.conf import settings
+from django.http import FileResponse
 from django.utils import timezone
 from django.http import JsonResponse
 from django.shortcuts import render, HttpResponse
@@ -18,14 +22,31 @@ class SalesModelForm(BootStrapModelForm):
         exclude = ['filename', 'create_time', 'user', ]
 
 
+class AjaxMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        def is_ajax(self):
+            return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+
+        request.is_ajax = is_ajax.__get__(request)
+        response = self.get_response(request)
+        return response
+
 def sales_list(request):
     # 查询
-    data_dict = {}
     search_data = request.GET.get('query', '')
     if search_data:
-        data_dict['filename__contains'] = search_data
+        queryset = models.SalesInfo.objects.filter(filename__contains=search_data).order_by('-id')
+    else:
+        queryset = models.SalesInfo.objects.all().order_by('-id')
 
-    queryset = models.SalesInfo.objects.all().order_by('-id')
+    sort = request.GET.get('sort', '')
+    if sort:
+        queryset = queryset.filter(sort_id=sort)
+        return render(request, 'sales_list_table.html', {'queryset': queryset})
+
     page_object = Pagination(request, queryset, page_size=5)
     form = SalesModelForm()
     context = {'form': form,
@@ -38,21 +59,21 @@ def sales_list(request):
 
 @csrf_exempt
 def sales_add(request):
-    # title = 'ModelForm上传'
-    # if request.method == 'GET':
-    #     form = SalesModelForm()
-    #     return render(request, 'sales_add.html', {'form': form, 'title': title})
     form = SalesModelForm(data=request.POST, files=request.FILES)
     if form.is_valid():
         # file_name = request.FILES['filepath'].name.split('.')[0]
-        file_ext = request.FILES['filepath'].name.split('.')[-1]
-        if file_ext == 'pptx' or file_ext == 'ppt':
-            form.instance.filepath.name = request.FILES['filepath'].name
+        # file_ext = request.FILES['filepath'].name.split('.')[-1]
+        # if file_ext == 'pptx' or file_ext == 'ppt':
+        #     form.instance.filepath.name = request.FILES['filepath'].name
         # 非页面上提交的字段
-        form.instance.update_time = timezone.now().strftime('%Y-%m-%d-%H:%M:%S')
+        form.instance.update_time = timezone.now()
         # 获取account里登陆的session中id
         form.instance.user_id = request.session['info']['id']
-        form.instance.filename = request.FILES['filepath'].name
+        # 文件名重复判断
+        filename = request.FILES['filepath'].name
+        if models.SalesInfo.objects.filter(filename=filename).exists():
+            return JsonResponse({'status': False, 'filename_exists': True})
+        form.instance.filename = filename
         form.save()
         # 返回到Ajax里res
         # 下面两句意思相等
@@ -71,10 +92,11 @@ def sales_edit(request):
     form = SalesModelForm(data=request.POST, instance=row_object, files=request.FILES)
     if form.is_valid():
         row = form.save(commit=False)
-        row.filename = request.FILES['filepath'].name
+        if 'filepath' in request.FILES:
+            row.filename = request.FILES['filepath'].name
         row.save()
         return JsonResponse({'status': True})
-    return JsonResponse({'status': False, 'tips': '数据修改失败，请检查输入字段！'})
+    return JsonResponse({'status': False, 'error': form.errors})
 
 
 def sales_detail(request):
@@ -101,3 +123,5 @@ def sales_delete(request):
         return JsonResponse({'status': False, 'error': '删除失败，数据不存在！'})
     models.SalesInfo.objects.filter(id=uid).delete()
     return JsonResponse({'status': True})
+
+

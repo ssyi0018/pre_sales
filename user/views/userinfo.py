@@ -91,7 +91,6 @@ def userinfo_list(request):
     search_data = request.GET.get('query', '')
     if search_data:
         data_dict['username__contains'] = search_data
-
     queryset = models.UserInfo.objects.filter(**data_dict)
     # 分页
     page_object = Pagination(request, queryset)

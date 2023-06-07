@@ -40,6 +40,7 @@ class SalesInfo(models.Model):
     filename = models.CharField(verbose_name='文件名', max_length=255)
     create_time = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
     sort = models.CharField(verbose_name='所属分类', max_length=255)
+    sort_id = models.IntegerField(verbose_name='分类id')
     filepath = models.FileField(verbose_name='文件路径', max_length=128, upload_to='sales/%Y-%m-%d')
     user = models.ForeignKey(verbose_name='负责人', to='UserInfo', to_field='id', null=True, blank=True,
                              on_delete=models.SET_NULL)
