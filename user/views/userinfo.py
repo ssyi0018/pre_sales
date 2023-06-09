@@ -24,10 +24,10 @@ class UserForm(BootStrapModelForm):
         }
 
     def clean_password(self):
-        MIN_PASSWORD_LENGTH = 6
+        min_password_length = 6
         pwd = self.cleaned_data.get('password')
-        if len(pwd) < MIN_PASSWORD_LENGTH:
-            raise forms.ValidationError("密码长度至少为 %d 位" % MIN_PASSWORD_LENGTH)
+        if len(pwd) < min_password_length:
+            raise forms.ValidationError("密码长度至少为 %d 位" % min_password_length)
         return md5(pwd)
 
     # 钩子函数,针对fields里字段
@@ -66,15 +66,15 @@ class UserInfoResetForm(BootStrapModelForm):
         }
 
     def clean_password(self):
-        MIN_PASSWORD_LENGTH = 6
+        min_password_length = 6
         pwd = self.cleaned_data.get('password')
         md5_pwd = md5(pwd)
         # 数据库校验密码是否一致
         exists = models.UserInfo.objects.filter(id=self.instance.pk, password=md5_pwd).exists()
         if exists:
             raise ValidationError('密码不能与之前一样！')
-        elif len(pwd) < MIN_PASSWORD_LENGTH:
-            raise forms.ValidationError("密码长度至少为 %d 位" % MIN_PASSWORD_LENGTH)
+        elif len(pwd) < min_password_length:
+            raise forms.ValidationError("密码长度至少为 %d 位" % min_password_length)
         return md5_pwd
 
     # 钩子函数,针对fields里字段
