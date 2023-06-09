@@ -39,6 +39,12 @@ class UserForm(BootStrapModelForm):
         # 返回到cleand_data里，再保存sava数据库
         return confirm
 
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        if models.UserInfo.objects.filter(username=username).exists():
+            raise forms.ValidationError('该用户名已被占用')
+        return username
+
 
 class UserInfoEditForm(BootStrapModelForm):
     class Meta:
