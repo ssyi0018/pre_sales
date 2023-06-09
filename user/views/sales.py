@@ -34,12 +34,14 @@ def sales_list(request):
     if sort:
         queryset = queryset.filter(sort=sort)
         return render(request, 'sales_list_table.html', {'queryset': queryset})
+    sort_choices = models.SalesInfo.sort_choices
     page_object = Pagination(request, queryset, page_size=5)
     form = SalesModelForm()
     context = {'form': form,
                'queryset': page_object.page_queryset,
                'page_string': page_object.html(),
                'search_data': search_data,
+               'sort_choices': sort_choices,
                }
     return render(request, 'sales_list.html', context)
 

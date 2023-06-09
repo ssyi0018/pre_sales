@@ -1,38 +1,36 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'plugins/bootstrap-3.4.1/css/bootstrap.css' %}">
-
-<table class="table table-bordered">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>文件名</th>
-        <th>创建时间</th>
-        <th>所属分类</th>
-        <th>负责人</th>
-        <th>更新时间</th>
-        <th>更新说明</th>
-        <th>操作</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for foo in  queryset %}
-        <tr uid="{{ foo.id }}">
-            <th>{{ foo.id }}</th>
-            <td><a href="{{ foo.filepath.url }}">{{ foo.filename }}</a></td>
-            <td>{{ foo.create_time|date:'Y-m-d' }}</td>
-            <td>{{ foo.get_sort_display }}</td>
-            <td>{{ foo.user.fullname }}</td>
-            <td>{{ foo.update_time|date:'Y-m-d' }}</td>
-            <td>{{ foo.renew }}</td>
-            <td>
-                <input uid="{{ foo.id }}" type="button" class="btn btn-primary btn-xs btn-edit"
-                       value="更新">
-            </td>
+    <table class="table table-bordered" style="margin-bottom: 0">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>文件名</th>
+            <th>创建时间</th>
+            <th>所属分类</th>
+            <th>负责人</th>
+            <th>更新时间</th>
+            <th>更新说明</th>
+            <th>操作</th>
         </tr>
-    {% endfor %}
-    </tbody>
-</table>
-
+        </thead>
+        <tbody>
+        {% for foo in  queryset %}
+            <tr uid="{{ foo.id }}">
+                <th>{{ foo.id }}</th>
+                <td><a href="{{ foo.filepath.url }}">{{ foo.filename }}</a></td>
+                <td>{{ foo.create_time|date:'Y-m-d' }}</td>
+                <td>{{ foo.get_sort_display }}</td>
+                <td>{{ foo.user.fullname }}</td>
+                <td>{{ foo.update_time|date:'Y-m-d' }}</td>
+                <td>{{ foo.renew }}</td>
+                <td>
+                    <input uid="{{ foo.id }}" type="button" class="btn btn-primary btn-xs btn-edit"
+                           value="更新">
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 <script src="{% static 'js/jquery-3.6.4.min.js' %}"></script>
 <script src="{% static 'plugins/bootstrap-3.4.1/js/bootstrap.js' %}"></script>
 <script src="{% static 'plugins/bootstrap-datepicker/js/bootstrap-datepicker.js' %}"></script>

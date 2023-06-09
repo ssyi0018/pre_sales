@@ -30,44 +30,40 @@
                         <div class="item">
                             <div class="header" onclick="clickMe(this)">公司售前资料</div>
                             <div class="content">
-                                <a>公司白皮书</a>
-                                <a>公司销售白皮书</a>
+                                <a href="?sort={{ sort_choices.0.0 }}" class="content-link">{{ sort_choices.0.1 }}</a>
+                                <a href="?sort={{ sort_choices.1.0 }}" class="content-link">{{ sort_choices.1.1 }}</a>
                             </div>
                         </div>
 
                         <div class="item">
                             <div class="header" onclick="clickMe(this)">公司券商项目介绍</div>
                             <div class="content hide">
-                                <a href="?sort=5" class="content-link">O32系统</a>
-                                <a href="?sort=6" class="content-link">TA系统</a>
-                                <a>东方证券</a>
-                                <a>光大证券</a>
-                                <a>国金证券</a>
-                                <a>国元证券</a>
-                                <a>海通证券</a>
-                                <a>券商周末测试</a>
+                                {% for i in sort_choices %}
+                                    {% if forloop.counter >= 3 and forloop.counter <= 10 %}
+                                        <a href="?sort={{ i.0 }}" class="content-link">{{ i.1 }}</a>
+                                    {% endif %}
+                                {% endfor %}
                             </div>
                         </div>
 
                         <div class="item">
                             <div class="header" onclick="clickMe(this)">公司自研产品介绍</div>
                             <div class="content hide">
-                                <a>自动化平台</a>
-                                <a>测试管理平台</a>
-                                <a>环境配置管理</a>
-                                <a>客户行为回放</a>
-                                <a>手机自动化平台</a>
-                                <a>数据构造平台</a>
-                                <a>统一模拟</a>
-                                <a>小工具介绍</a>
+                                {% for i in sort_choices %}
+                                    {% if forloop.counter >= 11 and forloop.counter <= 18 %}
+                                        <a href="?sort={{ i.0 }}" class="content-link">{{ i.1 }}</a>
+                                    {% endif %}
+                                {% endfor %}
                             </div>
                         </div>
                         <div class="item">
                             <div class="header" onclick="clickMe(this)">公司其它项目介绍</div>
                             <div class="content hide">
-                                <a>MicroFocus(OpenText)</a>
-                                <a>社保</a>
-                                <a>长鑫存储</a>
+                                {% for i in sort_choices %}
+                                    {% if forloop.counter >= 19 and forloop.counter <= 21 %}
+                                        <a href="?sort={{ i.0 }}" class="content-link">{{ i.1 }}</a>
+                                    {% endif %}
+                                {% endfor %}
                             </div>
                         </div>
 
