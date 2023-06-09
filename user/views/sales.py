@@ -25,17 +25,17 @@ class SalesModelForm(BootStrapModelForm):
 def sales_list(request):
     # 查询
     search_data = request.GET.get('query', '')
+    queryset = models.SalesInfo.objects.all().order_by('-id')
     if search_data:
-        queryset = models.SalesInfo.objects.filter(filename__contains=search_data).order_by('-id')
-    else:
-        queryset = models.SalesInfo.objects.all().order_by('-id')
+        queryset = queryset.filter(filename__contains=search_data)
     # 左边菜单查询
     sort = request.GET.get('sort', '')
     if sort:
         queryset = queryset.filter(sort=sort)
         return render(request, 'sales_list_table.html', {'queryset': queryset})
+
     sort_choices = models.SalesInfo.sort_choices
-    page_object = Pagination(request, queryset, page_size=5)
+    page_object = Pagination(request, queryset)
     form = SalesModelForm()
     context = {'form': form,
                'queryset': page_object.page_queryset,

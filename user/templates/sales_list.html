@@ -11,13 +11,20 @@
             <div style="float: right;width: 300px; margin-right: 18px;">
                 <form method="get">
                     <div class="input-group">
-                        <input type="text" name="query" class="form-control" placeholder="Search for..."
+                        <input type="text" name="query" class="form-control" placeholder="搜索用户"
                                value="{{ search_data }}">
                         <span class="input-group-btn">
-                            <button class="btn btn-default" type="submit">
-                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                            </button>
-                    </span>
+                          <button class="btn btn-default" type="submit">
+                            <span class="glyphicon glyphicon-search"></span>
+                          </button>
+                          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                            <span class="caret"></span>
+                          </button>
+                          <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a href="#">按所属分类</a></li>
+                            <li><a href="#">按负责人</a></li>
+                          </ul>
+                        </span>
                     </div>
                 </form>
             </div>
