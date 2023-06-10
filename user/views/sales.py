@@ -1,7 +1,6 @@
 import json
 import os
 from user import models
-from urllib.parse import unquote
 from django.conf import settings
 from django.http import FileResponse
 from django.utils import timezone
@@ -32,17 +31,21 @@ def sales_list(request):
     sort = request.GET.get('sort', '')
     if sort:
         queryset_sort = queryset.filter(sort=sort)
-        return render(request, 'sales_list_table.html', {'queryset_sort': queryset_sort})
+        context_sort = {
+            'queryset_sort': queryset_sort,
+        }
+        return render(request, 'sales_list_table.html', context_sort)
 
     sort_choices = models.SalesInfo.sort_choices
-    page_object = Pagination(request, queryset)
+    page_object = Pagination(request, queryset, page_size=5)
     form = SalesModelForm()
-    context = {'form': form,
-               'queryset': page_object.page_queryset,
-               'page_string': page_object.html(),
-               'search_data': search_data,
-               'sort_choices': sort_choices,
-               }
+    context = {
+        'form': form,
+        'queryset': queryset,  # 将默认的查询结果传给context的'queryset'
+        'page_string': page_object.html(),
+        'search_data': search_data,
+        'sort_choices': sort_choices,
+    }
     return render(request, 'sales_list.html', context)
 
 
