@@ -24,9 +24,10 @@ class SalesModelForm(BootStrapModelForm):
 def sales_list(request):
     # 查询
     search_data = request.GET.get('query', '')
-    queryset = models.SalesInfo.objects.all().order_by('-id')
     if search_data:
-        queryset = queryset.filter(filename__contains=search_data)
+        queryset = models.SalesInfo.objects.filter(filename__contains=search_data).order_by('-id')
+    else:
+        queryset = models.SalesInfo.objects.all().order_by('-id')
     # 左边菜单查询
     sort = request.GET.get('sort', '')
     if sort:
@@ -35,17 +36,15 @@ def sales_list(request):
             'queryset_sort': queryset_sort,
         }
         return render(request, 'sales_list_table.html', context_sort)
-
     sort_choices = models.SalesInfo.sort_choices
-    page_object = Pagination(request, queryset, page_size=5)
+    page_object = Pagination(request, queryset)
     form = SalesModelForm()
-    context = {
-        'form': form,
-        'queryset': queryset,  # 将默认的查询结果传给context的'queryset'
-        'page_string': page_object.html(),
-        'search_data': search_data,
-        'sort_choices': sort_choices,
-    }
+    context = {'form': form,
+               'queryset': page_object.page_queryset,
+               'page_string': page_object.html(),
+               'search_data': search_data,
+               'sort_choices': sort_choices,
+               }
     return render(request, 'sales_list.html', context)
 
 

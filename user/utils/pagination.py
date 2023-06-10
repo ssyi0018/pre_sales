@@ -21,7 +21,8 @@ class Pagination(object):
 
         self.page_param = page_param
         page = request.GET.get(page_param, '1')  # 分页
-        if page.isdecimal():
+        # if page.isdecimal():
+        if page.isdigit() and int(page) > 0:
             page = int(page)
         else:
             page = 1
