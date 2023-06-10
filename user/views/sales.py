@@ -31,8 +31,8 @@ def sales_list(request):
     # 左边菜单查询
     sort = request.GET.get('sort', '')
     if sort:
-        queryset = queryset.filter(sort=sort)
-        return render(request, 'sales_list_table.html', {'queryset': queryset})
+        queryset_sort = queryset.filter(sort=sort)
+        return render(request, 'sales_list_table.html', {'queryset_sort': queryset_sort})
 
     sort_choices = models.SalesInfo.sort_choices
     page_object = Pagination(request, queryset)

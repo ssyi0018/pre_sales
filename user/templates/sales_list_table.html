@@ -20,7 +20,7 @@
     </tr>
     </thead>
     <tbody>
-    {% for foo in  queryset %}
+    {% for foo in  queryset_sort %}
         <tr uid="{{ foo.id }}">
             <th>{{ foo.id }}</th>
             <td><a href="{{ foo.filepath.url }}">{{ foo.filename }}</a></td>
