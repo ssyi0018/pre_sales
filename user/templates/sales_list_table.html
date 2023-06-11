@@ -37,5 +37,10 @@
     {% endfor %}
     </tbody>
 </table>
+<ul class="pagination" style="margin-left: 1px;">
+    {% if queryset_sort %}
+        {{ page_string_table }}
+    {% endif %}
+</ul>
 </body>
 </html>

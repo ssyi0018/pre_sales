@@ -78,6 +78,7 @@
                 </div>
             </div>
         </div>
+
         <!-- 右边列表 -->
         <div class="col-sm-9">
             <div class="panel panel-default">
@@ -113,18 +114,19 @@
                             <td>
                                 <input uid="{{ foo.id }}" type="button" class="btn btn-primary btn-xs btn-edit"
                                        value="更新">
-                                <!--
+
                                 <input uid="{{ foo.id }}" class="btn btn-danger btn-xs btn-delete" type="button"
-                                       value="删除">
-                                 -->
+                                       value="删除" style="display: none">
                             </td>
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
             </div>
-            <ul class="pagination" style="margin-left: 1px;">
-                {{ page_string }}
+            <ul id="page_id" class="pagination" style="margin-left: 1px;">
+                {% if queryset %}
+                    {{ page_string }}
+                {% endif %}
             </ul>
         </div>
     </div>
