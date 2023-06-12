@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path
-from user.views import account, userinfo, sales
+from user.views import account, userinfo, sales, multi
 from django.views.static import serve
 from django.conf import settings
 
@@ -41,5 +41,9 @@ urlpatterns = [
     path('sales/delete/', sales.sales_delete),
     path('sales/edit/', sales.sales_edit),
     path('sales/detail/', sales.sales_detail),
+
+    # 资料上传
+    path('document/upload/', multi.multi_upload),
+    path('document/list/', multi.multi_list),
 
 ]
