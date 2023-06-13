@@ -71,3 +71,18 @@ class SalesInfo(models.Model):
                              on_delete=models.SET_NULL)
     update_time = models.DateTimeField(verbose_name='更新时间')
     renew = models.CharField(verbose_name='更新说明', max_length=255)
+
+
+class ExcelInfo(models.Model):
+    type_choices = (
+        (1, '光大_综合账户'),
+        (2, '东方_融资融券'),
+    )
+    file_type = models.IntegerField(verbose_name='所属分类', choices=type_choices, null=True, blank=True)
+    file_title = models.CharField(verbose_name='文件名称', max_length=255, null=True, blank=True)
+    issue_description = models.CharField(verbose_name='问题描述', max_length=255, null=True, blank=True)
+    issue_type = models.CharField(verbose_name='问题分类', max_length=255, null=True, blank=True)
+    issue_module = models.CharField(verbose_name='所属模块', max_length=255, null=True, blank=True)
+    issue_problem = models.CharField(verbose_name='问题原因', max_length=255, null=True, blank=True)
+    issue_analysis = models.CharField(verbose_name='影响面分析', max_length=255, null=True, blank=True)
+    test_strategy = models.CharField(verbose_name='测试策略', max_length=255, null=True, blank=True)

@@ -45,5 +45,6 @@ urlpatterns = [
     # 资料上传
     path('document/upload/', multi.multi_upload),
     path('document/list/', multi.multi_list),
+    path('document/add/', multi.multi_add),
 
 ]
