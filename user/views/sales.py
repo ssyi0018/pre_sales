@@ -18,7 +18,7 @@ class SalesModelForm(BootStrapModelForm):
         model = models.SalesInfo
         # fields = '__all__'
         # 排除某个字段
-        exclude = ['filename', 'create_time', 'user', 'sort_id', ]
+        exclude = ['filename', 'create_time', 'user', ]
 
 
 def sales_list(request):

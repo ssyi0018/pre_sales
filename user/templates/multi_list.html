@@ -3,20 +3,31 @@
 
 {% block content %}
     <div class="container">
-        <div class="row" style="margin-bottom: 10px">
-            <div class="col-xs-6 col-sm-3 col-lg-3">
-                <input class="form-control" type="file" id="formFile" name="excel_file">
-            </div>
-            <div class="col-xs-6 col-sm-2 col-lg-2">
-                <input type="submit" value="批量上传" class="btn btn-info">
-            </div>
-            <!--查询 -->
-            <div class="col-xs-6 col-sm-3 col-lg-3 pull-right clearfix">
-                <form method="get">
-                    <div class="input-group">
-                        <input type="text" name="query" class="form-control" placeholder="搜索用户"
-                               value="{{ search_data }}">
-                        <span class="input-group-btn">
+        <form method="post" enctype="multipart/form-data" action="/document/upload/" novalidate>
+            {% csrf_token %}
+            <div class="row" style="margin-bottom: 10px">
+                <div class="col-xs-6 col-sm-3 col-lg-3">
+                    <input class="form-control" type="file" id="formFile" name="excel_file">
+                </div>
+                <!-- 添加 file_type 字段的表单组件 -->
+                <div class="col-xs-6 col-sm-3 col-lg-2">
+                    {% for field in form %}
+                        <div class="form-group">
+                            {{ field }}
+                            <span style="color: red">{{ field.errors.0 }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="col-xs-6 col-sm-2 col-lg-2">
+                    <input type="submit" value="批量上传" class="btn btn-info">
+                </div>
+                <!--查询 -->
+                <div class="col-xs-6 col-sm-3 col-lg-3 pull-right clearfix">
+                    <form method="get">
+                        <div class="input-group">
+                            <input type="text" name="query" class="form-control" placeholder="搜索数据"
+                                   value="{{ search_data }}">
+                            <span class="input-group-btn">
                     <button class="btn btn-default" type="submit">
                         <span class="glyphicon glyphicon-search"></span>
                     </button>
@@ -29,53 +40,42 @@
                         <li><a href="#">按手机号</a></li>
                     </ul>
                 </span>
-                    </div>
-                </form>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
+        </form>
         <div class="panel panel-default panel-info">
             <div class="panel-heading">
                 <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-                用户列表
+                缺陷列表
             </div>
 
             <!-- Table -->
-            <table class="table table-bordered table-hover">
+            <table class="table table-bordered table-hover table-hover">
                 <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>用户名</th>
-                    <th>姓名</th>
-                    <th>密码</th>
-                    <th>邮箱</th>
-                    <th>创建时间</th>
-                    <th>性别</th>
-                    <th>部门</th>
-                    <th>角色</th>
-                    <th>操作</th>
-                    <th>重置密码</th>
+                    <th style="width: 5%">ID</th>
+                    <th style="width: 10%">项目分类</th>
+                    <th style="width: 25%">问题描述</th>
+                    <th style="width: 5%">问题分类</th>
+                    <th style="width: 5%">所属模块</th>
+                    <th style="width: 25%">问题原因</th>
+                    <th style="width: 15%">影响面分析</th>
+                    <th style="width: 10%">测试策略</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for foo in  queryset %}
                     <tr>
                         <th>{{ foo.id }}</th>
-                        <td>{{ foo.username }}</td>
-                        <td>{{ foo.fullname }}</td>
-                        <td>******</td>
-                        <td>{{ foo.email }}</td>
-                        <td>{{ foo.create_time }}</td>
-                        <td>{{ foo.get_gender_display }}</td>
-                        <td>{{ foo.depart.title }}</td>
-                        <td>{{ foo.role.caption }}</td>
-                        <td>
-                            <a class="btn btn-primary btn-xs" href="/user/{{ foo.id }}/edit/">编辑</a>
-                            <a class="btn btn-danger btn-xs" href="/user/{{ foo.id }}/del/"
-                               style="display: none">删除</a>
-                        </td>
-                        <td>
-                            <a class="btn btn-group-xs btn-xs" href="/user/{{ foo.id }}/reset/">重置密码</a>
-                        </td>
+                        <td>{{ foo.get_file_type_display }}</td>
+                        <td>{{ foo.issue_description }}</td>
+                        <td>{{ foo.issue_type }}</td>
+                        <td>{{ foo.issue_module }}</td>
+                        <td>{{ foo.issue_problem }}</td>
+                        <td>{{ foo.issue_analysis }}</td>
+                        <td>{{ foo.test_strategy }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>

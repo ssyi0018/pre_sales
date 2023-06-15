@@ -21,6 +21,7 @@ from django.views.static import serve
 from django.conf import settings
 
 urlpatterns = [
+    path('',account.login,name='login'),
     # path('admin/', admin.site.urls),
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}, name='media'),
     # 登录
