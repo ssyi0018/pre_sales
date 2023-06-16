@@ -16,12 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path
-from user.views import account, userinfo, sales, multi
+from user.views import account, userinfo, sales, multi, chart
 from django.views.static import serve
 from django.conf import settings
 
 urlpatterns = [
-    path('',account.login,name='login'),
+    path('', account.login, name='login'),
     # path('admin/', admin.site.urls),
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}, name='media'),
     # 登录
@@ -47,5 +47,9 @@ urlpatterns = [
     path('document/upload/', multi.multi_upload),
     path('document/list/', multi.multi_list),
     path('document/add/', multi.multi_add),
+
+    # 数据统计
+    path('chart/list/', chart.chart_list),
+    path('chart/bar/', chart.chart_bar),
 
 ]
