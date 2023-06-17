@@ -1,0 +1,48 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+    <div class="col-sm-3">
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav nav-pills nav-stacked">
+                <li>
+                    <a href="#"><i class="fa fa-dashboard fa-fw"></i> Dashboard <span class="toggle-icon"><i
+                            class="fa fa-arrow-down"></i></span></a>
+                    <ul class="nav nav-pills nav-stacked sub-menu">
+                        <li><a href="#">link1</a></li>
+                        <li><a href="#">link2</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-flag fa-fw"></i> Shortcut <span class="toggle-icon"><i
+                            class="fa fa-arrow-down"></i></span></a>
+                    <ul class="nav nav-pills nav-stacked sub-menu">
+                        <li><a href="#"><i class="fa fa-flag fa-fw"></i> link1</a></li>
+                        <li><a href="#"><i class="fa fa-flag fa-fw"></i> link2</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-cloud-download fa-fw"></i> Overview</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+{% endblock %}
+{% block js %}
+    <script>
+        $(document).ready(function () {
+            // 绑定点击事件
+            $('.sidebar-nav li a').click(function (event) {
+                // 阻止默认事件的发生
+                event.preventDefault();
+                // 找到子菜单
+                var subMenu = $(this).next('.sub-menu');
+                // 切换子菜单的显示状态
+                subMenu.toggle(200, 'linear');
+                // 切换图标的方向
+                $(this).find('.toggle-icon i').toggleClass('fa-arrow-down fa-arrow-left');
+            });
+        });
+    </script>
+{% endblock %}
