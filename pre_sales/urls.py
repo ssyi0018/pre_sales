@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path
-from user.views import account, userinfo, sales, multi, chart, knowledge
+from user.views import account, userinfo, sales, multi, chart, knowledge, workreport
 from django.views.static import serve
 from django.conf import settings
 
@@ -53,6 +53,8 @@ urlpatterns = [
     path('chart/bar/', chart.chart_bar),
 
     # 知识库
-    path('knowledge/list/', knowledge.knowledge_list)
+    path('knowledge/list/', knowledge.knowledge_list),
 
+    # 工作周报
+    path('work/list/', workreport.workreport_list)
 ]
