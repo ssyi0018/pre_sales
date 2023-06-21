@@ -1,19 +1,20 @@
-{% extends 'layout.html' %}
+{% extends 'layout_ace.html' %}
 {% load static %}
 {% block css %}
     <link rel="stylesheet" href="{% static '/css/tree.css' %}">
 {% endblock %}
 {% block content %}
     <div class="container">
-        <div style="text-align: left; margin-bottom: 10px; margin-left: 20px;">
-            <input id="btnAdd" type="button" value="上传文档" class="btn btn-success">
-            <!-- 搜索 -->
-            <div style="float: right;width: 300px; margin-right: 18px;">
-                <form method="get">
-                    <div class="input-group">
-                        <input type="text" name="query" class="form-control" placeholder="搜索文档"
-                               value="{{ search_data }}">
-                        <span class="input-group-btn">
+        <div class="page-content" style="padding: 8px 8px 5px">
+            <div style="text-align: left; margin-bottom: 10px; margin-left: 20px;">
+                <input id="btnAdd" type="button" value="上传文档" class="btn btn-success">
+                <!-- 搜索 -->
+                <div style="float: right;width: 300px; margin-right: 18px;">
+                    <form method="get">
+                        <div class="input-group">
+                            <input type="text" name="query" class="form-control" placeholder="搜索文档"
+                                   value="{{ search_data }}">
+                            <span class="input-group-btn">
                           <button class="btn btn-default" type="submit">
                             <span class="glyphicon glyphicon-search"></span>
                           </button>
@@ -25,155 +26,158 @@
                             <li><a href="#">按负责人</a></li>
                           </ul>
                         </span>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <!-- 左边树-->
-        <div class="col-md-3">
-            <div class="panel panel-default panel-info">
-                <div class="panel-body " style="padding: 0">
-                    <div class="menus">
-                        <div class="item">
-                            <div class="header" onclick="clickMe(this)">公司售前资料</div>
-                            <div class="content">
-                                <a href="?sort={{ sort_choices.0.0 }}" class="content-link">{{ sort_choices.0.1 }}</a>
-                                <a href="?sort={{ sort_choices.1.0 }}" class="content-link">{{ sort_choices.1.1 }}</a>
-                            </div>
-                        </div>
-
-                        <div class="item">
-                            <div class="header" onclick="clickMe(this)">公司券商项目介绍</div>
-                            <div class="content hide">
-                                {% for i in sort_choices %}
-                                    {% if forloop.counter >= 3 and forloop.counter <= 10 %}
-                                        <a href="?sort={{ i.0 }}" class="content-link">{{ i.1 }}</a>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                        </div>
-
-                        <div class="item">
-                            <div class="header" onclick="clickMe(this)">公司自研产品介绍</div>
-                            <div class="content hide">
-                                {% for i in sort_choices %}
-                                    {% if forloop.counter >= 11 and forloop.counter <= 18 %}
-                                        <a href="?sort={{ i.0 }}" class="content-link">{{ i.1 }}</a>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="header" onclick="clickMe(this)">公司其它项目介绍</div>
-                            <div class="content hide">
-                                {% for i in sort_choices %}
-                                    {% if forloop.counter >= 19 and forloop.counter <= 21 %}
-                                        <a href="?sort={{ i.0 }}" class="content-link">{{ i.1 }}</a>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 右边列表 -->
-        <div class="col-md-9">
-            <div class="panel panel-default panel-info">
-                <div class="panel-heading">
-                    <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-                    售前文档列表
-                </div>
-
-                <!-- Table -->
-                <table class="table table-bordered table-hover">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>文件名</th>
-                        <th>创建时间</th>
-                        <th>所属分类</th>
-                        <th>负责人</th>
-                        <th>更新时间</th>
-                        <th>更新说明</th>
-                        <th>操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for foo in  queryset %}
-                        <tr uid="{{ foo.id }}">
-                            <th>{{ foo.id }}</th>
-                            <td><a href="{{ foo.filepath.url }}">{{ foo.filename }}</a></td>
-                            <td>{{ foo.create_time|date:'Y-m-d' }}</td>
-                            <td>{{ foo.get_sort_display }}</td>
-                            <td>{{ foo.user.fullname }}</td>
-                            <td>{{ foo.update_time|date:'Y-m-d' }}</td>
-                            <td>{{ foo.renew }}</td>
-                            <td>
-                                <input uid="{{ foo.id }}" type="button" class="btn btn-primary btn-xs btn-edit"
-                                       value="更新">
-
-                                <input uid="{{ foo.id }}" class="btn btn-danger btn-xs btn-delete" type="button"
-                                       value="删除" style="display: none">
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            <ul id="page_id" class="pagination" style="margin-left: 1px;">
-                {% if queryset %}
-                    {{ page_string }}
-                {% endif %}
-            </ul>
-        </div>
-    </div>
-    <!-- 新建/编辑订单 -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">上传文件</h4>
-                </div>
-                <div class="modal-body">
-                    <form id="formAdd">
-                        <div class="clearfix">
-                            {% for field in form %}
-                                <div class="col-xs-6">
-                                    <div class="form-group" style="position: relative; margin-bottom: 20px">
-                                        <label>{{ field.label }}</label>
-                                        {{ field }}
-                                        <span class="error-msg" style="color: red;position: absolute;"></span>
-                                    </div>
-                                </div>
-                            {% endfor %}
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <button id='btnSave' type="button" class="btn btn-primary">保存</button>
+            </div>
+            <!-- 左边树-->
+            <div class="col-md-3">
+                <div class="panel panel-default panel-info">
+                    <div class="panel-body " style="padding: 0">
+                        <div class="menus">
+                            <div class="item">
+                                <div class="header" onclick="clickMe(this)">公司售前资料</div>
+                                <div class="content">
+                                    <a href="?sort={{ sort_choices.0.0 }}"
+                                       class="content-link">{{ sort_choices.0.1 }}</a>
+                                    <a href="?sort={{ sort_choices.1.0 }}"
+                                       class="content-link">{{ sort_choices.1.1 }}</a>
+                                </div>
+                            </div>
+
+                            <div class="item">
+                                <div class="header" onclick="clickMe(this)">公司券商项目介绍</div>
+                                <div class="content hide">
+                                    {% for i in sort_choices %}
+                                        {% if forloop.counter >= 3 and forloop.counter <= 10 %}
+                                            <a href="?sort={{ i.0 }}" class="content-link">{{ i.1 }}</a>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="item">
+                                <div class="header" onclick="clickMe(this)">公司自研产品介绍</div>
+                                <div class="content hide">
+                                    {% for i in sort_choices %}
+                                        {% if forloop.counter >= 11 and forloop.counter <= 18 %}
+                                            <a href="?sort={{ i.0 }}" class="content-link">{{ i.1 }}</a>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="header" onclick="clickMe(this)">公司其它项目介绍</div>
+                                <div class="content hide">
+                                    {% for i in sort_choices %}
+                                        {% if forloop.counter >= 19 and forloop.counter <= 21 %}
+                                            <a href="?sort={{ i.0 }}" class="content-link">{{ i.1 }}</a>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右边列表 -->
+            <div class="col-md-9">
+                <div class="panel panel-default panel-info">
+                    <div class="panel-heading">
+                        <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                        售前文档列表
+                    </div>
+
+                    <!-- Table -->
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>文件名</th>
+                            <th>创建时间</th>
+                            <th>所属分类</th>
+                            <th>负责人</th>
+                            <th>更新时间</th>
+                            <th>更新说明</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for foo in  queryset %}
+                            <tr uid="{{ foo.id }}">
+                                <th>{{ foo.id }}</th>
+                                <td><a href="{{ foo.filepath.url }}">{{ foo.filename }}</a></td>
+                                <td>{{ foo.create_time|date:'Y-m-d' }}</td>
+                                <td>{{ foo.get_sort_display }}</td>
+                                <td>{{ foo.user.fullname }}</td>
+                                <td>{{ foo.update_time|date:'Y-m-d' }}</td>
+                                <td>{{ foo.renew }}</td>
+                                <td>
+                                    <input uid="{{ foo.id }}" type="button" class="btn btn-primary btn-xs btn-edit"
+                                           value="更新">
+
+                                    <input uid="{{ foo.id }}" class="btn btn-danger btn-xs btn-delete" type="button"
+                                           value="删除" style="display: none">
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <ul id="page_id" class="pagination" style="margin-left: 1px;">
+                    {% if queryset %}
+                        {{ page_string }}
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        <!-- 新建/编辑订单 -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">上传文件</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formAdd">
+                            <div class="clearfix">
+                                {% for field in form %}
+                                    <div class="col-xs-6">
+                                        <div class="form-group" style="position: relative; margin-bottom: 20px">
+                                            <label>{{ field.label }}</label>
+                                            {{ field }}
+                                            <span class="error-msg" style="color: red;position: absolute;"></span>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button id='btnSave' type="button" class="btn btn-primary">保存</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- 删除对话框 -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="alert alert-danger alert-dismissible fade in" role="alert">
-                {#                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span#}
-                {#                        aria-hidden="true">×</span></button>#}
-                <h4>是否确定删除</h4>
-                <p style="margin: 10px 0;">删除后所有关联的相关数据都会被删除！</p>
-                <p style="text-align: right">
-                    <button id="btnConfirmDelete" type="button" class="btn btn-danger">确 定</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">取 消</button>
-                </p>
+        <!-- 删除对话框 -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                    {#                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span#}
+                    {#                        aria-hidden="true">×</span></button>#}
+                    <h4>是否确定删除</h4>
+                    <p style="margin: 10px 0;">删除后所有关联的相关数据都会被删除！</p>
+                    <p style="text-align: right">
+                        <button id="btnConfirmDelete" type="button" class="btn btn-danger">确 定</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取 消</button>
+                    </p>
+                </div>
             </div>
         </div>
     </div>

@@ -13,262 +13,238 @@
 </head>
 <body class="no-skin">
 <div class="container">
-<div id="navbar" class="navbar navbar-default navbar-collapse h-navbar ace-save-state">
-    <div class="navbar-container ace-save-state" id="navbar-container">
-        <div class="navbar-header pull-left">
-            <a href="#" class="navbar-brand">
-                <small>
-                    <i class="fa fa-leaf"></i>
-                    讯优市场管理平台
-                </small>
-            </a>
-        </div>
+    <div id="navbar" class="navbar navbar-default navbar-collapse h-navbar ace-save-state">
+        <div class="navbar-container ace-save-state" id="navbar-container">
+            <div class="navbar-header pull-left">
+                <a href="#" class="navbar-brand">
+                    <small>
+                        <i class="fa fa-leaf"></i>
+                        讯优市场管理平台
+                    </small>
+                </a>
+            </div>
 
-        <div class="navbar-buttons navbar-right pull-right  collapse navbar-collapse" role="navigation">
-            <ul class="nav ace-nav">
-                <li class="light-blue dropdown user-min">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false">{{ request.session.info.name }}<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">个人资料</a></li>
-                        <li><a href="#">我的信息</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="/logout/">注销</a></li>
-                    </ul>
-                </li>
-            </ul>
+            <div class="navbar-buttons navbar-right pull-right  collapse navbar-collapse" role="navigation">
+                <ul class="nav ace-nav">
+                    <li class="light-blue dropdown user-min">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">{{ request.session.info.name }}<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">个人资料</a></li>
+                            <li><a href="#">我的信息</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="/logout/">注销</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="main-container ace-save-state" id="main-container">
-    <div id="sidebar" class="sidebar h-sidebar navbar-collapse collapse ace-save-state">
-        <div class="sidebar-shortcuts" id="sidebar-shortcuts">
-            <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
-                <button class="btn btn-success">
-                    <i class="ace-icon fa fa-signal"></i>
-                </button>
+    <div class="main-container ace-save-state" id="main-container">
+        <div id="sidebar" class="sidebar h-sidebar navbar-collapse collapse ace-save-state">
+            <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+                <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+                    <button class="btn btn-success">
+                        <i class="ace-icon fa fa-signal"></i>
+                    </button>
 
-                <button class="btn btn-info">
-                    <i class="ace-icon fa fa-pencil"></i>
-                </button>
+                    <button class="btn btn-info">
+                        <i class="ace-icon fa fa-pencil"></i>
+                    </button>
 
-                <button class="btn btn-warning">
-                    <i class="ace-icon fa fa-users"></i>
-                </button>
+                    <button class="btn btn-warning">
+                        <i class="ace-icon fa fa-users"></i>
+                    </button>
 
-                <button class="btn btn-danger">
-                    <i class="ace-icon fa fa-cogs"></i>
-                </button>
+                    <button class="btn btn-danger">
+                        <i class="ace-icon fa fa-cogs"></i>
+                    </button>
+                </div>
+                <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
+                    <span class="btn btn-success"></span>
+
+                    <span class="btn btn-info"></span>
+
+                    <span class="btn btn-warning"></span>
+
+                    <span class="btn btn-danger"></span>
+                </div>
             </div>
-            <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
-                <span class="btn btn-success"></span>
 
-                <span class="btn btn-info"></span>
+            <ul class="nav nav-list" style="border-left: 1px solid #bddff1; border-right: 1px solid #ddebf1;">
+                <li class="hover">
+                    <a href="#">
+                        <i class="menu-icon fa fa-tachometer"></i>
+                        <span class="menu-text"> Dashboard </span>
+                    </a>
 
-                <span class="btn btn-warning"></span>
+                    <b class="arrow"></b>
+                </li>
 
-                <span class="btn btn-danger"></span>
-            </div>
-        </div>
-
-        <ul class="nav nav-list">
-            <li class="hover">
-                <a href="#">
-                    <i class="menu-icon fa fa-tachometer"></i>
-                    <span class="menu-text"> Dashboard </span>
-                </a>
-
-                <b class="arrow"></b>
-            </li>
-
-            <li class="active open hover">
-                <a href="#" class="dropdown-toggle">
-                    <i class="menu-icon fa fa-desktop"></i>
-                    <span class="menu-text">
+                <li class="hover">
+                    <a href="#" class="dropdown-toggle">
+                        <i class="menu-icon fa fa-desktop"></i>
+                        <span class="menu-text">
 								功能管理
 							</span>
 
-                    <b class="arrow fa fa-angle-down"></b>
-                </a>
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
 
-                <b class="arrow"></b>
+                    <b class="arrow"></b>
 
-                <ul class="submenu">
-                    <li class="active open hover">
-                        <a href="#" class="dropdown-toggle">
-                            <i class="menu-icon fa fa-caret-right"></i>
+                    <ul class="submenu">
+                        <li class="hover">
+                            <a href="/user/list">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                用户管理
+                            </a>
+                            <b class="arrow"></b>
+                        </li>
 
-                            用户管理
-                            <b class="arrow fa fa-angle-down"></b>
-                        </a>
+                        <li class="hover">
+                            <a href="#">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                部门管理
+                            </a>
 
-                        <b class="arrow"></b>
+                            <b class="arrow"></b>
+                        </li>
 
-                        <ul class="submenu">
-                            <li class="hover">
-                                <a href="#">
-                                    <i class="menu-icon fa fa-caret-right"></i>
-                                    用户信息
-                                </a>
+                        <li class="hover">
+                            <a href="#">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                角色管理
+                            </a>
 
-                                <b class="arrow"></b>
-                            </li>
+                            <b class="arrow"></b>
+                        </li>
 
-                            <li class="hover">
-                                <a href="#">
-                                    <i class="menu-icon fa fa-caret-right"></i>
-                                    用户资料
-                                </a>
+                    </ul>
+                </li>
 
-                                <b class="arrow"></b>
-                            </li>
+                <li class="hover">
+                    <a href="#" class="dropdown-toggle">
+                        <i class="menu-icon fa fa-pencil-square-o"></i>
+                        <span class="menu-text"> 售前文档管里 </span>
 
-                            <li class="active hover">
-                                <a href="#">
-                                    <i class="menu-icon fa fa-caret-right"></i>
-                                    用户文档
-                                </a>
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
 
-                                <b class="arrow"></b>
-                            </li>
-                        </ul>
-                    </li>
+                    <b class="arrow"></b>
 
-                    <li class="hover">
-                        <a href="#">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            部门管理
-                        </a>
+                    <ul class="submenu">
+                        <li class="hover">
+                            <a href="/sales/list">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                公司内部
+                            </a>
 
-                        <b class="arrow"></b>
-                    </li>
+                            <b class="arrow"></b>
+                        </li>
 
-                    <li class="hover">
-                        <a href="#">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            角色管理
-                        </a>
+                        <li class="hover">
+                            <a href="#">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                对外提供
+                            </a>
 
-                        <b class="arrow"></b>
-                    </li>
+                            <b class="arrow"></b>
+                        </li>
+                    </ul>
+                </li>
 
-                </ul>
-            </li>
+                <li class="hover">
+                    <a href="/knowledge/list" class="dropdown-toggle">
+                        <i class="menu-icon fa fa-list"></i>
+                        <span class="menu-text"> 知识库 </span>
 
-            <li class="hover">
-                <a href="#" class="dropdown-toggle">
-                    <i class="menu-icon fa fa-pencil-square-o"></i>
-                    <span class="menu-text"> 售前文档管里 </span>
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
 
-                    <b class="arrow fa fa-angle-down"></b>
-                </a>
+                    <b class="arrow"></b>
 
-                <b class="arrow"></b>
+                    <ul class="submenu">
+                        <li class="hover">
+                            <a href="#">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                证券知识
+                            </a>
 
-                <ul class="submenu">
-                    <li class="hover">
-                        <a href="#">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            公司内部
-                        </a>
+                            <b class="arrow"></b>
+                        </li>
 
-                        <b class="arrow"></b>
-                    </li>
+                        <li class="hover">
+                            <a href="#">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                交易所业务
+                            </a>
 
-                    <li class="hover">
-                        <a href="#">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            对外提供
-                        </a>
+                            <b class="arrow"></b>
+                        </li>
 
-                        <b class="arrow"></b>
-                    </li>
-                </ul>
-            </li>
+                        <li class="hover">
+                            <a href="#">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                测试技能
+                            </a>
 
-            <li class="hover">
-                <a href="#" class="dropdown-toggle">
-                    <i class="menu-icon fa fa-list"></i>
-                    <span class="menu-text"> 知识库 </span>
+                            <b class="arrow"></b>
+                        </li>
 
-                    <b class="arrow fa fa-angle-down"></b>
-                </a>
+                        <li class="hover">
+                            <a href="#">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                开发知识
+                            </a>
 
-                <b class="arrow"></b>
+                            <b class="arrow"></b>
+                        </li>
 
-                <ul class="submenu">
-                    <li class="hover">
-                        <a href="#">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            证券知识
-                        </a>
+                        <li class="hover">
+                            <a href="#">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                数据库操作
+                            </a>
 
-                        <b class="arrow"></b>
-                    </li>
+                            <b class="arrow"></b>
+                        </li>
+                    </ul>
+                </li>
 
-                    <li class="hover">
-                        <a href="#">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            交易所业务
-                        </a>
+                <li class="hover">
+                    <a href="/document/list">
+                        <i class="menu-icon fa fa-list-alt"></i>
+                        <span class="menu-text"> 缺陷上传 </span>
+                    </a>
+                    <b class="arrow"></b>
+                </li>
 
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="hover">
-                        <a href="#">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            测试技能
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="hover">
-                        <a href="#">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            开发知识
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="hover">
-                        <a href="#">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            数据库操作
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-                </ul>
-            </li>
-
-            <li class="hover">
-                <a href="#">
-                    <i class="menu-icon fa fa-list-alt"></i>
-                    <span class="menu-text"> 缺陷上传 </span>
-                </a>
-                <b class="arrow"></b>
-            </li>
-
-            <li class="hover">
-                <a href="#">
-                    <i class="menu-icon fa fa-calendar"></i>
-                    <span class="menu-text">
+                <li class="hover">
+                    <a href="/work/list/">
+                        <i class="menu-icon fa fa-calendar"></i>
+                        <span class="menu-text">
 								工作周报
 								<span class="badge badge-transparent tooltip-error" title="2 Important Events">
 									<i class="ace-icon fa fa-exclamation-triangle red bigger-130"></i>
 								</span>
 							</span>
-                </a>
+                    </a>
 
-                <b class="arrow"></b>
-            </li>
-        </ul>
+                    <b class="arrow"></b>
+                </li>
+
+                <li class="hover">
+                    <a href="/chart/list">
+                        <i class="menu-icon fa fa-bar-chart-o"></i>
+                        <span class="menu-text"> 数据分析 </span>
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+            </ul>
+        </div>
     </div>
-</div>
 
 </div>
 <div>
@@ -279,9 +255,11 @@
 
 <script src="{% static 'js/jquery-3.6.4.min.js' %}"></script>
 <script src="{% static 'plugins/bootstrap-3.4.1/js/bootstrap.js' %}"></script>
+<script src="{% static 'js/annex.js' %}"></script>
 <!-- ace scripts -->
 <script src="{% static 'js/ace-elements.min.js' %}"></script>
 <script src="{% static 'js/ace.min.js' %}"></script>
+
 {% block js %}
 
 {% endblock %}
