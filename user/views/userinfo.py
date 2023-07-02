@@ -1,11 +1,12 @@
 """用户列表，增删改查"""
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django import forms
 from user import models
 from user.utils.pagination import Pagination
 from user.utils.bootstrap import BootStrapModelForm
 from django.core.exceptions import ValidationError
 from user.utils.encrypt import md5
+from django.contrib import messages
 
 
 class UserForm(BootStrapModelForm):
@@ -118,9 +119,16 @@ def userinfo_add(request):
     if form.is_valid():
         # print(form.cleaned_data) # 获取验证通过的所有数据，字典值
         form.save()
+        messages.success(request, '用户添加成功！')  # 添加成功提示信息
         return redirect("/user/list/")
     else:
-        return render(request, 'add_public.html', {'form': form, 'title': title})
+        context = {
+            'title': title,
+            'form': form,
+            'messages': messages.get_messages(request),
+        }
+        messages.error(request, '用户添加失败！')  # 添加失败提示信息
+        return render(request, 'add_public.html', context)
 
 
 def userinfo_edit(request, nid):
