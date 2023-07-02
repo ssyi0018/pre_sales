@@ -6,7 +6,7 @@ from django.shortcuts import redirect
 class AuthMiddleWare(MiddlewareMixin):
     def process_request(self, request):
         # 排除不需要验证的页面
-        if request.path_info in ['/login/', '/image/code/', '/user/add/',]:
+        if request.path_info in ['/login/', '/image/code/', '/user/add/', ]:
             return
         # 如果方法没有返回值，None，继续往后走，有返回值则不继续执行可以重定向等
         # return HttpResponse('无权访问')
