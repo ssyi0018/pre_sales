@@ -85,6 +85,8 @@ def sales_edit(request):
 
     form = SalesModelForm(data=request.POST, instance=row_object, files=request.FILES)
     if form.is_valid():
+        # 获取account里登陆的session中id
+        form.instance.user_id = request.session['info']['id']
         row = form.save(commit=False)
         if 'filepath' in request.FILES:
             row.filename = request.FILES['filepath'].name
